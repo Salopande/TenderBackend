@@ -13,6 +13,10 @@ app.use('/',authRouter)
 app.use('/',profileRouter)
 app.use('/', requestRouter)
 
+app.use(express.json())
+app.use(cookieParser())
+
+
 connectDB().then(()=>{
     console.log("Database connection successfully")
     app.listen(3000, ()=>{
@@ -25,8 +29,6 @@ connectDB().then(()=>{
 //     res.send({firstname:"saloni",lastname:"pande"})
 // })
 
-app.use(express.json())
-app.use(cookieParser())
 
 
 app.delete("/user", async(req,res)=>{
