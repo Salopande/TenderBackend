@@ -30,6 +30,7 @@ authRouter.post('/signup',async(req,res)=>{
 authRouter.post('/login', async(req,res)=>{
     try{
     const {emailId, password} = req.body;
+    console.log(req)
     const user = await User.findOne({emailId:emailId})
     if(!user){
         throw new Error("EmailId is not preset in th ID")
@@ -39,7 +40,7 @@ authRouter.post('/login', async(req,res)=>{
         const token= await user.getJWT();
         console.log(token)
         res.cookie('token',token)
-         res.send("Login Sucessfully")
+         res.send(user)
     }else{
         throw new Error("password is not valid")
     }

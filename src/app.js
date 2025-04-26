@@ -2,6 +2,7 @@ const express = require('express')
 const connectDB= require('./config/database')
 const app = express();
 const User = require('./models/user');
+const cors = require("cors");
 
 const cookieParser = require('cookie-parser')
 
@@ -10,23 +11,36 @@ const profileRouter = require('./routes/profile')
 const requestRouter = require('./routes/requests');
 const userRouter = require('./routes/user');
 
+app.use(
+    cors({
+      origin: "http://localhost:5173",
+      credentials: true,
+    })
+);
 app.use('/',authRouter)
 app.use('/',profileRouter)
 app.use('/', requestRouter)
 app.use('/', userRouter)
 
+
 app.use(express.json())
 app.use(cookieParser())
 
+const hostname = '127.0.0.1'; // localhost
+const port = 3000; // any free port you like
 
 connectDB().then(()=>{
     console.log("Database connection successfully")
-    app.listen(3000, ()=>{
-        console.log("Server sucessfully listening port bbb")
-    })
+    app.listen(port, hostname, () => {
+        console.log(`Server running at http://${hostname}:${port}/`);
+      });
 }).catch((err)=>{
     console.log("Database can not be connected")
 })
+
+app.get('/', (req, res) => {
+    res.send('Hello World!');
+  });
 // app.get('/user',(req,res)=>{
 //     res.send({firstname:"saloni",lastname:"pande"})
 // })
